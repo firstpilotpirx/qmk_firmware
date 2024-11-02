@@ -68,6 +68,10 @@ __attribute__((weak)) bool get_custom_auto_shifted_key(uint16_t keycode, keyreco
 
 /** \brief Called on physical press, returns whether key is an Auto Shift key */
 __attribute__((weak)) bool get_auto_shifted_key(uint16_t keycode, keyrecord_t *record) {
+// print("get_auto_shifted_key\n");
+// return true;
+
+// uprintf("keycode %u\n", keycode);
     switch (keycode) {
 #ifndef NO_AUTO_SHIFT_ALPHA
         case AUTO_SHIFT_ALPHA:
@@ -86,6 +90,15 @@ __attribute__((weak)) bool get_auto_shifted_key(uint16_t keycode, keyrecord_t *r
 #ifdef AUTO_SHIFT_ENTER
         case KC_ENT:
 #endif
+case 10244:
+case 10249:
+case 8711:
+case 9238:
+case 8452:
+case 12595:
+case 13327:
+case 12814:
+case 14349:
             return true;
     }
     return get_custom_auto_shifted_key(keycode, record);
@@ -101,6 +114,7 @@ __attribute__((weak)) bool get_auto_shift_no_auto_repeat(uint16_t keycode, keyre
 
 /** \brief Called when an Auto Shift key needs to be pressed */
 __attribute__((weak)) void autoshift_press_user(uint16_t keycode, bool shifted, keyrecord_t *record) {
+// print("autoshift_press_user\n");
     if (shifted) {
         add_weak_mods(MOD_BIT(KC_LSFT));
     }
@@ -114,6 +128,7 @@ __attribute__((weak)) void autoshift_release_user(uint16_t keycode, bool shifted
 
 /** \brief Sets the shift state to use when keyrepeating, required by custom shifts */
 void set_autoshift_shift_state(uint16_t keycode, bool shifted) {
+// print("set_autoshift_shift_state\n");
     keycode = keycode & 0xFF;
     if (shifted) {
         autoshift_shift_states[keycode / 16] |= (uint16_t)1 << keycode % 16;
@@ -124,12 +139,14 @@ void set_autoshift_shift_state(uint16_t keycode, bool shifted) {
 
 /** \brief Gets the shift state to use when keyrepeating, required by custom shifts */
 bool get_autoshift_shift_state(uint16_t keycode) {
+// print("get_autoshift_shift_state\n");
     keycode = keycode & 0xFF;
     return (autoshift_shift_states[keycode / 16] & (uint16_t)1 << keycode % 16) != (uint16_t)0;
 }
 
 /** \brief Restores the shift key if it was cancelled by Auto Shift */
 static void autoshift_flush_shift(void) {
+// print("autoshift_flush_shift\n");
     autoshift_flags.holding_shift = false;
 #ifdef CAPS_WORD_ENABLE
     if (!is_caps_word_on())
@@ -153,6 +170,8 @@ static void autoshift_flush_shift(void) {
  *  \return Whether the record should be further processed.
  */
 static bool autoshift_press(uint16_t keycode, uint16_t now, keyrecord_t *record) {
+
+// print("autoshift_press\n");
     // clang-format off
     if ((get_mods()
 #if !defined(NO_ACTION_ONESHOT) && !defined(NO_ACTION_TAPPING)
@@ -240,6 +259,7 @@ static bool autoshift_press(uint16_t keycode, uint16_t now, keyrecord_t *record)
  * Called on key down with keycode=KC_NO, auto-shifted key up, and timeout.
  */
 static void autoshift_end(uint16_t keycode, uint16_t now, bool matrix_trigger, keyrecord_t *record) {
+// print("autoshift_end\n");
     if (autoshift_flags.in_progress && (keycode == autoshift_lastkey || keycode == KC_NO)) {
         // Process the auto-shiftable key.
         autoshift_flags.in_progress = false;
@@ -307,6 +327,7 @@ static void autoshift_end(uint16_t keycode, uint16_t now, bool matrix_trigger, k
  *  to be released.
  */
 void autoshift_matrix_scan(void) {
+
     if (autoshift_flags.in_progress) {
         const uint16_t now = timer_read();
         if (TIMER_DIFF_16(now, autoshift_time) >=
@@ -322,15 +343,18 @@ void autoshift_matrix_scan(void) {
 }
 
 void autoshift_toggle(void) {
+// print("autoshift_toggle\n");
     autoshift_flags.enabled = !autoshift_flags.enabled;
     autoshift_flush_shift();
 }
 
 void autoshift_enable(void) {
+// print("autoshift_enable\n");
     autoshift_flags.enabled = true;
 }
 
 void autoshift_disable(void) {
+// print("autoshift_disable\n");
     autoshift_flags.enabled = false;
     autoshift_flush_shift();
 }
@@ -364,6 +388,7 @@ void set_autoshift_timeout(uint16_t timeout) {
 }
 
 bool process_auto_shift(uint16_t keycode, keyrecord_t *record) {
+// print("process_auto_shift\n");
     // Note that record->event.time isn't reliable, see:
     // https://github.com/qmk/qmk_firmware/pull/9826#issuecomment-733559550
     // clang-format off
@@ -470,7 +495,10 @@ bool process_auto_shift(uint16_t keycode, keyrecord_t *record) {
     if (!autoshift_flags.enabled) {
         return true;
     }
+//     uprintf("get_auto_shifted_key(keycode, record) %u\n", get_auto_shifted_key(keycode, record));
     if (get_auto_shifted_key(keycode, record)) {
+//     uprintf("record->event.pressed %u\n", record->event.pressed);
+//     record->event.pressed = true;
         if (record->event.pressed) {
             return autoshift_press(keycode, now, record);
         } else {

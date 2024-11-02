@@ -23,6 +23,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #define TAPPING_TERM 200
+#define RETRO_TAPPING
 #define PERMISSIVE_HOLD
-#define AUTO_SHIFT_TIMEOUT 400
-#define RETRO_SHIFT 1000
+
+#define AUTO_SHIFT_TIMEOUT 200
+#define RETRO_SHIFT
+// #define NO_ACTION_TAPPING
+// #define HOLD_ON_OTHER_KEY_PRESS
+
+
+// #define DYNAMIC_KEYMAP_LAYER_COUNT 4
