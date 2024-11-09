@@ -21,7 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define KINETIC_SPEED
 
-
 #define TAPPING_TERM 175
 #define RETRO_TAPPING
 #define PERMISSIVE_HOLD
