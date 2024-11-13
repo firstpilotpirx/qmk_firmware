@@ -71,7 +71,7 @@ __attribute__((weak)) bool get_auto_shifted_key(uint16_t keycode, keyrecord_t *r
 // print("get_auto_shifted_key\n");
 // return true;
 
-// uprintf("keycode %u\n", keycode);
+uprintf("keycode %u\n", keycode);
     switch (keycode) {
 #ifndef NO_AUTO_SHIFT_ALPHA
         case AUTO_SHIFT_ALPHA:
@@ -90,15 +90,25 @@ __attribute__((weak)) bool get_auto_shifted_key(uint16_t keycode, keyrecord_t *r
 #ifdef AUTO_SHIFT_ENTER
         case KC_ENT:
 #endif
-case 10244:
-case 10249:
-case 8711:
-case 9238:
+// case 10244:
+// case 10249:
+// case 8711:
+// case 9238:
+// case 8452:
+// case 12595:
+// case 13327:
+// case 12814:
+// case 14349:
+
+case 10263:
+case 8726:
+case 9237:
 case 8452:
-case 12595:
-case 13327:
-case 12814:
-case 14349:
+
+case 14353:
+case 12808:
+case 13324:
+case 12562:
             return true;
     }
     return get_custom_auto_shifted_key(keycode, record);
