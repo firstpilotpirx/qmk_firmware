@@ -21,11 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define KINETIC_SPEED
 
-#define TAPPING_TERM 200
+#define TAPPING_TERM 175
 #define RETRO_TAPPING
 #define PERMISSIVE_HOLD
+#define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 
-#define AUTO_SHIFT_TIMEOUT 200
+#define AUTO_SHIFT_TIMEOUT 175
 #define AUTO_SHIFT_REPEAT
 #define RETRO_SHIFT 500
 
